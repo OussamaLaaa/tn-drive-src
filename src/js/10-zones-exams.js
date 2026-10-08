@@ -1,0 +1,62 @@
+// ---- real situations (zones) ----
+const RL={'i:pro17':['lim',50,150,'السرعة القصوى 50 كلم/س'],'i:pro34':['lim',30,150,'منطقة تحديد السرعة 30 كلم/س'],'i:obl16':['min',30,150,'أدنى سرعة إجبارية 30 كلم/س'],'i:tmp0':['lim',30,150,'أشغال على الطريق'],'i:pro33':['noov',0,220,'ممنوع المجاوزة'],'i:pro36':['nostop',0,150,'ممنوع الوقوف والتوقف'],'i:pro39':['nostop',0,150,'ممنوع الوقوف'],'i:info1':['park',0,130,'مأوى للوقوف'],'i:dng4':['bump',0,90,'طريق مسنم'],'i:tmp5':['bump',0,90,'طريق مسنم'],'i:dng24':['bump',0,90,'مخفض سرعة'],'i:dng26':['ped',0,110,'ممر خاص بالمترجلين'],'i:dng17':['kid',0,110,'مكان يكثر فيه الأطفال'],'i:dng18':['anim',0,120,'مرور حيوانات أهلية'],'i:dng23':['anim',0,120,'مرور حيوانات وحشية'],'i:dng22':['anim',0,120,'عبور خيالة'],'i:dng6':['wet',0,150,'معبد زالق'],'i:tmp4':['wet',0,150,'معبد زالق'],'i:stop':['stop',0,110,'قف'],'i:yield':['yield',0,110,'فسح المجال'],'m_zebra':['ped',0,110,'ممر المترجلين'],'m_stopl':['stop',0,110,'خط قف'],'m_yieldl':['yield',0,110,'خط فسح المجال'],'m_solid':['noov',0,220,'خط متواصل']};
+['dng0','dng1','dng2','dng9','dng10','dng12','dng13','dng14','dng25','dng29','dng33','dng35','tmp1'].forEach(k=>RL['i:'+k]=['lim',50,130,'علامة خطر: خفّف السرعة']);
+['dng15','dng16','dng19','dng20','dng21','dng27','dng28','dng32','dng34'].forEach(k=>RL['i:'+k]=['rail',0,110,'تقاطع مع سكة حديدية']);
+Object.assign(RL,{rain:['rain',70,200,'سقوط المطر'],ycurb:['ycurb',0,140,'خط أصفر متقطع على حافة الرصيف'],bus:['bus',0,120,'حافلة تغادر موقفها'],off:['off',0,110,'عون المرور يشير بالتوقف'],acc:['acc',0,140,'حادث مرور أمامك']});
+const RLX={lim:'تجاوزت السرعة المسموحة داخل منطقة العلامة.',min:'لم تحافظ على السرعة الدنيا الإجبارية.',noov:'عبرت إلى المسلك المقابل في منطقة منع المجاوزة.',nostop:'توقفت في منطقة يمنع فيها الوقوف أو التوقف رغم طلب المُمتحِن؛ لا تتوقف حيث تمنع العلامة.',park:'لم تتوقف في المأوى الذي طلب منك المُمتحِن الوقوف فيه.',bump:'مررت على المخفض بسرعة عالية؛ يجب النزول إلى 25 كلم/س أو أقل.',ped:'لم تفسح المجال للراجلين.',kid:'لم تفسح المجال للأطفال.',anim:'لم تخفف السرعة عند عبور الحيوانات.',rail:'عبرت السكة والأضواء الحمراء تومض.',stop:'لم تتوقف توقفًا تامًا عند خط قف.',yield:'لم تفسح المجال للقادم من اليمين.',ycurb:'بقيت واقفًا مدة طويلة في منطقة يمنع فيها الوقوف؛ التوقف القصير فقط مسموح.',bus:'لم تفسح المجال للحافلة التي تغادر موقفها داخل العمران.',off:'تجاوزت عون المرور وهو يشير بالتوقف.',acc:'لم تتوقف أمام مكان الحادث.'};
+function lay(L){ZN=[];let p=60;L.sg.forEach(it=>{const q=L.rl&&(RL[it[0]]||RL[it[6]]);ZN.push({it,p,r:q?{t:q[0],v:q[1],len:q[2]}:null});p+=q?q[2]+70:40});endD=p+30}
+function V(z,s){if(z.vi||st!=1)return;z.vi=1;M.rl='خالفت العلامة: '+z.it[2];E.rl=[RLX[z.r.t]||'مخالفة لمعنى العلامة.','معنى العلامة: '+z.it[2]];F('rl',s)}
+function zs(z,r,p,pz){const q=r.t;
+if(q=='noov')slow={d:p+70,x:2};
+if(q=='bump'){bpM.position.z=-pz;bpM.visible=true}
+if(q=='ped'||q=='kid'){zbG.position.z=-pz;zbG.visible=true}
+if(q=='ped'||q=='kid'||q=='anim')Object.assign(W2,{on:0,x:-7,z:pz,k:q});
+if(q=='rail'){tkM.position.z=-pz;tkM.visible=true;rlA.position.z=rlB.position.z=-pz;brM.position.z=-pz;rp.forEach(o=>{o.position.z=-pz;o.visible=true})}
+if(q=='stop'||q=='yield'){lnM.position.z=-pz;lnM.visible=true;if(q=='yield')CZ=pz+8}
+if(q=='ycurb'){for(let u=p+8,k=0;u<p+r.len;u+=1.2,k++){const m=B(.3,.2,1.1,k%2?0x222222:0xe8c020,4.15,.1,-u);sgL.push(m)}}
+if(q=='bus'){busM.visible=true;z.bus={d:pz+30,x:3.4,s:0,t:0}}
+if(q=='off'){og.visible=true;og.position.z=-pz;lnM.position.z=-pz;lnM.visible=true}
+if(q=='acc'){acM1.visible=acM2.visible=injM.visible=true;acM1.position.set(2.2,0,-(pz+3));acM1.rotation.y=.5;acM2.position.set(.3,0,-(pz+9));acM2.rotation.y=-.7;injM.position.set(3.4,0,-(pz+1));z.qs=0;z.qt=0}}
+function zu(z,L,dt,f,cr){const r=z.r,p=z.p;
+if(!r){if(!z.dn&&f>p-14){z.dn=1;sq2(z.it,L.sg)}return}
+const a=p+8,b=p+r.len,pz=p+55,inz=f>a&&f<b,q=r.t;
+if(!z.on&&f>p-45){z.on=1;zs(z,r,p,pz)}
+if(q=='lim'||q=='wet'){if(inz){ZL=r.v||50;M.spd='لم تحترم: '+z.it[2];E.spd=[z.it[2]+' — الحد '+ZL+' كلم/س.','أخفض سرعتك إلى '+ZL+' كلم/س أو أقل داخل المنطقة.']}if(q=='wet'&&f>a-15&&f<b)wet=1}
+else if(q=='min'){if(inz){BN='⬆ السرعة الدنيا '+r.v+' كلم/س';if(f>a+30&&v<r.v-3){if((z.tm=(z.tm||0)+dt)>4)V(z)}else z.tm=0}}
+else if(q=='noov'){if(inz){BN='🚫 ممنوع المجاوزة';if(x<.9)V(z)}if(f>b+15&&slow&&z.on)slow=null}
+else if(q=='nostop'){if(inz){BN='🗣️ المُمتحِن: أوقف السيارة هنا الآن!';if(v<1){if((z.tm=(z.tm||0)+dt)>1.5)V(z)}else z.tm=0}}
+else if(q=='park'){if(inz){BN='🗣️ المُمتحِن: اركن هنا (توقف)';if(v<1){if((z.tm=(z.tm||0)+dt)>1.5&&!z.ok){z.ok=1;toast='✅ توقفت في المأوى';toastT=2;AU.ok()}}else z.tm=0}if(f>b&&!z.ok)V(z)}
+else if(q=='bump'){if(cr(pz)){if(v>25)V(z);jolt=Math.min(.6,.1+v/90);AU.thud()}}
+else if(q=='ped'||q=='kid'||q=='anim'){if(!z.w&&f>pz-60){z.w=1;Object.assign(W2,{on:1,x:-7,z:pz,k:q})}
+if(W2.on&&W2.z==pz){W2.x+=(q=='anim'?1.7:2.3)*dt;if(W2.x>7)W2.on=0;if(cr(pz)&&Math.abs(W2.x)<4.5&&(q!='anim'||v>15))V(z,1);if(q=='anim'&&Math.abs(W2.x-x)<1.6&&Math.abs(d-pz)<3){W2.on=0;crash()}}}
+else if(q=='rail'){if(!z.rs&&f>p+5){z.rs=1;rl=1;rt=t}if(rl&&f>p&&f<pz+2)BN='🚂 أضواء حمراء: توقف';if(cr(pz)&&rl)V(z,1)}
+else if(q=='stop'){if(f>pz-22&&f<pz&&v<3)z.st=1;if(cr(pz)&&!z.st)V(z,1)}
+else if(q=='yield'){if(!z.cs&&f>pz-45){z.cs=1;cross={x:40,on:1,done:0}}if(cr(pz)&&cross.on&&Math.abs(cross.x)<6&&CZ==pz+8)V(z,1)}
+else if(q=='rain'){if(f>a-30&&f<b+25)RN=1;if(inz){ZL=70;wet=1;BN='🌧️ مطر: خفّف السرعة (الحد 70)';M.spd='لم تخفض السرعة تحت المطر';E.spd=['عند نزول المطر يُخفض الحد الأقصى خارج العمران بـ20 كلم/س فيصبح 70 كلم/س.','أخفض سرعتك إلى 70 كلم/س أو أقل وزد مسافة الأمان.']}}
+else if(q=='ycurb'){if(inz){BN='🗣️ المُمتحِن: أوقف السيارة هنا (توقف قصير)';if(v<1){if((z.tm=(z.tm||0)+dt)>6)V(z)}else z.tm=0}}
+else if(q=='off'){if(!z.os&&f>p+5){z.os=1;of=1;ot=t}if(of==1&&f>p&&f<pz)BN='👮 عون المرور ذراعاه ممدودتان: قف';if(cr(pz)&&of==1)V(z,1);if(f>b+10)og.visible=false}
+else if(q=='bus'){const bs=z.bus;if(bs){busM.position.set(bs.x,0,-bs.d);if(bs.s==0&&f>pz-45){bs.s=1;bs.t=0}if(bs.s==1){bs.t+=dt;BN='🚌 الحافلة تُشير للانطلاق: افسح لها المجال';if(bs.t>1.6)bs.s=2}if(bs.s==2){bs.x=Math.max(2,bs.x-1.2*dt);bs.d+=3.5*dt;if(bs.x<=2.05)bs.s=3}if(bs.s==3)bs.d+=5*dt;const gap=bs.d-4.5-(d+2);if(bs.s==2&&gap<10&&gap>-6&&v>25)V(z,1);if(bs.s>=2&&bs.s<9&&Math.abs(bs.x-x)<2&&Math.abs(bs.d-d)<7){bs.s=9;crash()}if(f>b+25)busM.visible=false}}
+else if(q=='acc'){if(f>pz-30&&f<pz-6&&v<3)z.st=1;if(cr(pz-6)&&!z.st)V(z,1);if(!z.st&&f>p+5&&f<pz-6)BN='🚨 حادث أمامك: توقف';if(z.st&&z.qs<3&&st==1&&t-z.qt>.4){z.qt=t;accAsk(z)}if(z.qs>=3&&!z.dn2){z.dn2=1;toast='✅ تصرفت بشكل صحيح أمام الحادث';toastT=2.5;AU.ok()}if(f>b+25)acM1.visible=acM2.visible=injM.visible=false}
+if(f>b&&!z.fin){z.fin=1;if(!z.vi){toast='✅ '+z.it[2];toastT=2.2;AU.ok()}}}
+const ACCQ=[['ما أول ما تفعله بعد التوقف؟','أحمي مكان الحادث وأنبّه السائقين (غماز الخطر والإشارات)','أحرّك المصاب فورًا','أواصل السير','حماية مكان الحادث تمنع حوادث إضافية.'],['كيف تطلب النجدة؟','أتصل بالإسعاف (190) أو الحماية المدنية (198)','أنتظر مرور عربة أخرى','لا أتصل إلا إذا طُلب مني','اطلب النجدة مع تحديد المكان وعدد المصابين.'],['مصاب ينزف من ذراعه. ماذا تفعل؟','أضغط بيدي مباشرة على موضع النزيف لعدة دقائق','أسقيه ماءً','أنتظر دون فعل شيء','الضغط المباشر والمتواصل على الجرح يوقف النزيف.']];
+function accAsk(z){const a=ACCQ[z.qs++];M.accq='إجابة خاطئة: الإسعافات الأولية';E.accq=[a[4],'الجواب الصحيح: '+a[1]];Q(a[0],[a[1],a[2],a[3]],0,'accq')}
+let EX=null;
+function startExam(i){cur=i;st=0;mn=0;document.getElementById('mp').style.display='none';K={};
+EX={i,n:0,ok:0,bad:[],qs:LV[i].ex.map(r=>{const a=r.split('|'),o=[[a[1],1],[a[2],0],[a[3],0]].filter(x=>x[0]);o.sort((p,q)=>o.length==2?(p[0]=='نعم'?-1:q[0]=='نعم'?1:Math.random()-.5):Math.random()-.5);return{q:a[0],o,ex:a[4]||'',img:a[5]||''}}).sort(()=>Math.random()-.5)};exq()}
+function exq(){const e=EX,q=e.qs[e.n],L=LV[e.i];ov.className='';ov.style.display='flex';ov.innerHTML=`<div style="font-size:13px;opacity:.8">${L.n} — سؤال ${e.n+1} / ${e.qs.length}</div>${q.img?`<img src="${IM[q.img]}" style="width:100%;max-height:32vh;object-fit:cover;border-radius:10px;margin:6px 0">`:''}<h3 style="margin:6px 0">${q.q}</h3>`+q.o.map((o,k)=>`<button class="go" style="text-align:right;background:#222;border:1px solid #fff4;margin:4px 0" onclick="exa(${k})"><b>${'أبج'[k]}</b> &nbsp;${o[0]}</button>`).join('')+'<div id="exr"></div>'}
+function exa(k){const e=EX,q=e.qs[e.n],ok=q.o[k][1];[...ov.querySelectorAll('button')].forEach((b,j)=>{b.disabled=true;if(q.o[j]&&q.o[j][1])b.style.background='#1a8a4a';else if(j==k)b.style.background='#a22'});
+if(ok){e.ok++;AU.ok()}else{e.bad.push(q);AU.bad();rum(.6,.3)}
+document.getElementById('exr').innerHTML=`<div class="f" style="background:${ok?'#1a8a4a55':'#c8102e55'}">${ok?'✅ إجابة صحيحة':'❌ إجابة خاطئة'}${q.ex?'<br>'+q.ex:''}</div><button class="go" onclick="exn()">${e.n+1<e.qs.length?'الموالي ➡️':'النتيجة'}</button>`}
+function exn(){const e=EX;e.n++;if(e.n<e.qs.length)return exq();const N=e.qs.length,need=Math.ceil(N*.8),pass=e.ok>=need,pct=Math.round(100*e.ok/N);if(pass){save(e.i,pct);AU.win()}
+ov.innerHTML=`<h2>${pass?'🎉 نجحت':'😕 لم تنجح'}</h2>النتيجة: ${e.ok} / ${N} — المطلوب ${need} (80% كما في الاختبار الرسمي: 24 من 30)${e.bad.length?'<div style="margin-top:8px"><b>راجع أخطاءك:</b></div>'+e.bad.map(q=>`<div class="f"><b>${q.q}</b><br>✔ ${q.o.find(o=>o[1])[0]}${q.ex?'<br>'+q.ex:''}</div>`).join(''):''}<button class="go" onclick="startExam(${e.i})">أعد السلسلة</button><button class="go" style="background:#333" onclick="menu()">☰ القائمة</button>`}
+const DEC={};function decor(th){if(DEC[th])return DEC[th];const g=new T.Group();
+if(th=='b'){streetDecor(g,20,2800,null,{gap:11});walk(B(2,.2,2800,0x999999,5,0,-1400,g),2800);walk(B(2,.2,2800,0x999999,-5,0,-1400,g),2800)}
+else treeDecor(g,20,2800,14,null);
+g.visible=false;sc.add(g);return DEC[th]=g}
+
+Object.assign(M,{oil:'لم تتوقف عند ظهور مؤشر أحمر',fuel:'إجابة خاطئة: المؤشر البرتقالي',offc:'لم تلتزم بإشارة عون المرور',flash:'إجابة خاطئة: الضوء البرتقالي الوامض',dark:'سرت ليلًا دون أضواء المقاطعة',dip50:'سرعة عالية مع أضواء المقاطعة',dazzle:'أبهرت السائق القادم بأضواء الطريق',fogf:'لم تتصرف كما يلزم في الضباب',pos:'إجابة خاطئة: التوقف ليلًا'});
+Object.assign(E,{oil:['المؤشرات الحمراء (ضغط الزيت، حرارة المحرك، الشحن، الفرامل) تعني خطرًا: يجب التوقف حالًا.','اضغط 🛑 وتوقف بأمان على اليمين وأوقف المحرك، ثم افحص السبب.'],fuel:['المؤشر البرتقالي تنبيه لا خطر فوري: الوقود منخفض ويمكنك المواصلة.','واصل بهدوء إلى أقرب محطة وقود ولا تتوقف في الطريق.'],offc:['إشارات أعوان المرور لها الأولوية المطلقة على الإشارات الضوئية والعلامات.','عند رفع العون يده أو فتح ذراعيه أمامك: قف قبل الخط وانتظر إشارته بالمرور.'],flash:['الضوء البرتقالي الوامض لا يمنع المرور لكنه يفرض الحذر.','أبطئ وطبّق قواعد الأولوية (أو ما تفرضه العلامات).'],dark:['ليلًا يجب إشعال أضواء المقاطعة (البيضاء) على الأقل. أضواء الوضعية وحدها لا تكفي أثناء السير.','اضغط 💡 حتى يظهر «مقاطعة» أو «طريق».'],dip50:['أضواء المقاطعة تضيء 30 م فقط، ومسافة التوقف عند 50 كلم/س حوالي 25 م، فلا تتجاوز 50 بها.','أبطئ إلى 50 أو أقل، أو استعمل أضواء الطريق (100 م) في طريق مظلمة خالية.'],dazzle:['أضواء الطريق تُبهر السائق المقابل، ويجب الانتقال إلى المقاطعة عند التقاء سيارة قادمة أو اتباع سيارة.','اضغط 💡 للعودة إلى «مقاطعة» قبل أن تقترب السيارة القادمة.'],fogf:['في الضباب تُشعل أضواء الضباب (أمامية وخلفية) مع أضواء المقاطعة وتُخفَّض السرعة.','اضغط 🌫️ لتفعيلها وأبطئ إلى 50 كلم/س أو أقل.'],pos:['عند التوقف ليلًا خارج العمران تبقى أضواء الوضعية مضاءة (تُرى من 150 م): بيضاء أمامًا وحمراء خلفًا.','اختر أضواء الوضعية لتنبيه بقية السائقين دون إبهارهم.']});
+function Q(q,o,a,k,im){st=3;K={};ov.className=LV[cur].sg?'qz':'';ov.style.display='flex';ov.innerHTML=`<h2>❓ ${q}</h2>`+(im?`<img src="${IU(im)}" style="max-width:130px;max-height:120px;height:auto;align-self:center;margin:2px 0 8px;background:#fff;border-radius:8px">`:'')+o.map((s,i)=>[s,i==a?1:0]).sort(()=>Math.random()-.5).map(z=>`<button class="go" style="background:#333" onclick="qa(${z[1]},'${k}')">${z[0]}</button>`).join('')}
+function qa(c,k){st=1;ov.className='';ov.style.display='none';if(c){toast='✅ إجابة صحيحة';toastT=2;AU.ok()}else F(k,0)}
+let lights=0,fog=0,lampR=0,lampO=0,ev={},of=0,ot=0,lt2=0,st2=0,ltT=0,dpT=0,fgT=0,dzT=0,rl=0,rt=0,bl=0,bt=0,mn=0,ms=0,mt=0,mx=0,my=0,ma=0,msa=0,stg=0,att=0,mgT=0,mirT=-99,dsT=0,tr=0,cur=6,endD=3150,prog={};try{prog=JSON.parse(localStorage.getItem('tnprog')||'{}')}catch(e){}
+tr=!!prog.tr;function save(i,s){prog[i]=Math.max(prog[i]||0,s);try{localStorage.setItem('tnprog',JSON.stringify(prog))}catch(e){}}
